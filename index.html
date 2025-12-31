@@ -199,6 +199,43 @@
         font-size: 0.95rem;
       }
     }
+     /* Firecracker Effects */
+ .firecracker-container {
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ pointer-events: none;
+ z-index: 1000;
+ }
+ .firecracker {
+ position: absolute;
+ width: 8px;
+ height: 8px;
+ border-radius: 50%;
+ pointer-events: none;
+ }
+ @keyframes burst {
+ 0% {
+ transform: translate(0, 0) scale(1);
+ opacity: 1;
+ }
+ 100% {
+ transform: translate(var(--tx), var(--ty)) scale(0);
+ opacity: 0;
+ }
+ }
+ .firecracker {
+ animation: burst 0.8s ease-out forwards;
+ }
+ @keyframes twinkle {
+ 0%, 100% { opacity: 1; }
+ 50% { opacity: 0.3; }
+ }
+ .twinkle {
+ animation: twinkle 0.2s ease-in-out 2;
+ }
   </style>
 </head>
 <body>
@@ -323,5 +360,38 @@
     <p>Happy New Year to the love of my life! 🎆</p>
     <div class="footer-signature">From Harsh, with all my love ❤️</div>
   </div>
+   <div id="firecracker-container" class="firecracker-container"></div>
+ <script>
+ (function() {
+ const container = document.getElementById('firecracker-container');
+ const colors = ['#ff006e', '#fb5607', '#ffbe0b', '#8338ec', '#3a86ff', '#06ffa5', '#ff006e'];
+ 
+ function createFirecracker() {
+ const x = Math.random() * window.innerWidth;
+ const y = Math.random() * window.innerHeight * 0.6;
+ const particleCount = 20 + Math.random() * 20;
+ 
+ for (let i = 0; i < particleCount; i++) {
+ const particle = document.createElement('div');
+ particle.className = 'firecracker';
+ const angle = (Math.PI * 2 * i) / particleCount;
+ const velocity = 3 + Math.random() * 5;
+ const tx = Math.cos(angle) * velocity * 100;
+ const ty = Math.sin(angle) * velocity * 100;
+ particle.style.left = x + 'px';
+ particle.style.top = y + 'px';
+ particle.style.setProperty('--tx', tx + 'px');
+ particle.style.setProperty('--ty', ty + 'px');
+ particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+ container.appendChild(particle);
+ setTimeout(() => particle.remove(), 800);
+ }
+ }
+ 
+ window.addEventListener('load', () => {
+ setInterval(createFirecracker, 400);
+ });
+ })();
+ </script>
 </body>
 </html>
