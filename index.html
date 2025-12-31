@@ -247,7 +247,7 @@
    <!-- Audio Player -->
  <div style="text-align: center; margin: 30px 0; background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 15px; max-width: 500px; margin-left: auto; margin-right: auto; backdrop-filter: blur(10px);">
   <p style="margin: 0 0 15px 0; font-size: 1.1rem; font-weight: 600; color: #f97316;">🎵 I Think They Call This Love 🎵</p>
-  <audio controls style="width: 100%; background: rgba(0, 0, 0, 0.3); border-radius: 10px; padding: 10px;">
+  <audio autoplay style="width: 100%; background: rgba(0, 0, 0, 0.3); border-radius: 10px; padding: 10px; display: none;">
    <source src="https://ppl-ai-file-upload.s3.amazonaws.com/web/d2849c5c-91d9-40a9-8c06-7bac0aca6bc6/d8e034da54da6bc1-2025-01-01T07-45-45-928Z-I_Think_They_Call_This_Love_Cover.mp3?client_id=e4ee34da54dab1ee51624e98b5e4fbc4" type="audio/mpeg">
    Your browser does not support the audio element.
   </audio>
@@ -400,5 +400,31 @@
 setInterval(createFirecracker, 400);
   })();
  </script>
+  <script>
+  // Auto-play and stop audio on page leave
+  document.addEventListener('DOMContentLoaded', function() {
+    const audioElement = document.querySelector('audio');
+    if (audioElement) {
+      audioElement.play().catch(err => console.log('Autoplay prevented:', err));
+    }
+  });
+
+  // Stop audio when user leaves the page
+  window.addEventListener('beforeunload', function() {
+    const audioElement = document.querySelector('audio');
+    if (audioElement) {
+      audioElement.pause();
+      audioElement.currentTime = 0;
+    }
+  });
+
+  // Also stop audio when page loses focus/visibility
+  document.addEventListener('visibilitychange', function() {
+    const audioElement = document.querySelector('audio');
+    if (document.hidden && audioElement) {
+      audioElement.pause();
+    }
+  });
+</script>
 </body>
 </html>
